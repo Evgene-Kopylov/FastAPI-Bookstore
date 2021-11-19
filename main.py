@@ -1,14 +1,3 @@
-# import os
-# os.environ["PYTHONPATH"] = "/backend/"
-
-# import sys
-# sys.path.append("/backend/")
-
-
-# import sys
-# import os
-# sys.path.append(os.path.join(sys.path[0], './backend/'))
-
 from backend.core.config import settings
 from fastapi import FastAPI
 from sqlalchemy.orm import query
