@@ -1,6 +1,6 @@
 import pytest
 
-from  ..main import plus
+from  main import plus
 
 def test_one():
     assert 1==1
