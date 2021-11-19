@@ -1,11 +1,10 @@
 
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from pydantic import BaseSettings
 
-from pathlib import Path
-env_path = Path('../.env')
-load_dotenv(dotenv_path=env_path)
+
+load_dotenv(find_dotenv())
 
 class Settings(BaseSettings):
     project_name:str = "bookstore api"
