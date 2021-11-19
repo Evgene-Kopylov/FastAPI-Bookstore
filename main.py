@@ -1,17 +1,30 @@
+# import os
+# os.environ["PYTHONPATH"] = "/backend/"
+
+# import sys
+# sys.path.append("/backend/")
+
+
+# import sys
+# import os
+# sys.path.append(os.path.join(sys.path[0], './backend/'))
+
+from backend.core.config import settings
 from fastapi import FastAPI
 from sqlalchemy.orm import query
 from sqlalchemy.orm.session import Session
 import uvicorn
-from db.session import SessionLocal
-from db.models import Book
+from backend.db.session import SessionLocal
+from backend.db.models import Book
 
-from core.config import settings
 
-from db.base import Base
-from db.base import BookSchema
+from backend.db.base import Base
+from backend.db.base import BookSchema
 
-from db.session import engine
+from backend.db.session import engine
 
+def plus(a,b):
+    return a+b
 
 db = SessionLocal()
 
