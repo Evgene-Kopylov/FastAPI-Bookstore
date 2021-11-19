@@ -1,10 +1,19 @@
 from fastapi import FastAPI
+from sqlalchemy.orm import query
+from sqlalchemy.orm.session import Session
 import uvicorn
+from db.session import SessionLocal
+from db.models import Book
 
 from core.config import settings
+
 from db.base import Base
+from db.base import BookSchema
+
 from db.session import engine
 
+
+db = SessionLocal()
 
 
 def create_tables():
@@ -21,7 +30,37 @@ app = start_application()
 
 @app.get('/')
 def root():
+
     return {'settings': settings}
+
+
+@app.post('/api/post/book/')
+def add_book(data: BookSchema):
+    obj = Book(**data.dict())
+    db.add(obj)
+    db.commit()
+    db.refresh(obj)
+
+    all_books = db.query(Book).all()[::-1]
+
+    return {
+        'msg': 'book',
+        'data': data,
+        'all_books': all_books
+    }
+
+
+@app.get('/api/get/book/')
+def list_books():
+    books = db.query(Book).all()[::-1][:5]
+    return books
+
+
+@app.get('/api/get/book/{book_id}')
+def get_book(book_id: int):
+    book = db.query(Book).filter(Book.id == book_id).first()
+    return book
+
 
 
 
