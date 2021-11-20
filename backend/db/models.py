@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
 # from sqlalchemy.orm import relationship
 
-from backend.db.base_class import Base
+from db.base_class import Base
 
 
 class Book(Base):

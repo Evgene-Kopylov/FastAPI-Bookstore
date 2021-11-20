@@ -1,3 +1,3 @@
-from backend.db.base_class import Base
-from backend.db.models import Book
-from backend.db.schemas import BookSchema
+from db.base_class import Base
+from db.models import Book
+from db.schemas import BookSchema
