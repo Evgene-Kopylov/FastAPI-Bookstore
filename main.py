@@ -16,13 +16,15 @@ from backend.db.session import engine
 db = SessionLocal()
 
 
-def create_tables():
-	print("create_tables")
-	Base.metadata.create_all(bind=engine)
+# def create_tables():
+# 	print("create_tables")
+# 	Base.metadata.create_all(bind=engine)
 
 def start_application():
-	app = FastAPI(title=settings.project_name,version=settings.project_version)
-	create_tables()
+	app = FastAPI(
+        title=settings.project_name,
+        version=settings.project_version)
+	# create_tables()
 	return app
 
 
