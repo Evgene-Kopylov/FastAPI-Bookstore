@@ -12,8 +12,6 @@ from backend.db.base import BookSchema
 
 from backend.db.session import engine
 
-def plus(a,b):
-    return a+b
 
 db = SessionLocal()
 
@@ -32,7 +30,6 @@ app = start_application()
 
 @app.get('/')
 def root():
-
     return {'settings': settings}
 
 
