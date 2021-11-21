@@ -4,4 +4,3 @@ from pydantic import BaseModel,EmailStr
 
 class BookSchema(BaseModel):
     title: str
-    # author: Optional[str]
