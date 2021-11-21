@@ -34,8 +34,6 @@ def root():
 
 @app.post('/api/post/author/')
 def add_author(request: AuthorBase):
-    # if "first_name" in request:
-    print("_+_+_+_+_++_+_+",request.first_name)
     obj = Author(**request.dict())
     db.add(obj)
     db.commit()
