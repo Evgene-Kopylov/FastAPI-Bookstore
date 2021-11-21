@@ -1,3 +1,5 @@
+from db.base_models import AuthorBase
+from db.models import Author
 from core.config import settings
 from fastapi import FastAPI
 from sqlalchemy.orm import query
@@ -30,20 +32,40 @@ app = start_application()
 def root():
     return {'settings': settings}
 
-
-@app.post('/api/post/book/')
-def add_book(data: BookBase):
-    obj = Book(**data.dict())
+@app.post('/api/post/author/')
+def add_author(request: AuthorBase):
+    # if "first_name" in request:
+    print("_+_+_+_+_++_+_+",request.first_name)
+    obj = Author(**request.dict())
     db.add(obj)
     db.commit()
     db.refresh(obj)
 
-    all_books = db.query(Book).all()[::-1]
+    authors_list = db.query(Author).all()[::-1][:5]
 
     return {
-        'msg': 'book',
-        'data': data,
-        'all_books': all_books
+        'msg': 'msg',
+        'data': request,
+        'authors_list': authors_list
+    }
+
+@app.post('/api/post/book/')
+def add_book(request: BookBase):
+    b = Book()
+    b.title = request.title
+    for author_id in request.authors:
+        author = db.query(Author).get(author_id)
+        b.authors.append(author)
+    db.add(b)
+    db.commit()
+    db.refresh(b)
+
+    books_list = db.query(Book).all()[::-1][:5]
+
+    return {
+        'msg': "msg",
+        'data': request,
+        'books_list': books_list
     }
 
 
