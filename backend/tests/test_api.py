@@ -22,6 +22,13 @@ def test_get_book_book_id():
     print(response.json())
     assert "title" in response.json().keys()
 
+def test_post_book():
+    body = {
+        "title": "SSS"
+    }    
+    response = client.post('/api/get/book/', body)
+    assert response.status_code == 200
+
 
 
 
