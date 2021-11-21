@@ -2,5 +2,5 @@ from typing import Optional
 from pydantic import BaseModel,EmailStr
 
 
-class BookSchema(BaseModel):
+class BookBase(BaseModel):
     title: str

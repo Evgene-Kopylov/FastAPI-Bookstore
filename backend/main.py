@@ -8,7 +8,7 @@ from db.models import Book
 
 
 from db.base import Base
-from db.base import BookSchema
+from db.base import BookBase
 
 from db.session import engine
 
@@ -32,7 +32,7 @@ def root():
 
 
 @app.post('/api/post/book/')
-def add_book(data: BookSchema):
+def add_book(data: BookBase):
     obj = Book(**data.dict())
     db.add(obj)
     db.commit()
