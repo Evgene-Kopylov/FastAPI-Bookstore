@@ -16,4 +16,4 @@ class Author(BaseModel):
 
 class Publisher(BaseModel):
     name: str
-
+    description: Optional[str]

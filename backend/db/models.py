@@ -33,6 +33,7 @@ class Author(Base):
 class Publisher(Base):
     id = Column(Integer,primary_key = True, index=True)
     name = Column(String,nullable= False)
+    description = Column(String,nullable= False)
     books = relationship(
         'Book',
         backref='publisher')
