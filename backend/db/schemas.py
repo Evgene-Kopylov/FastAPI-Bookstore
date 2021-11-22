@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 from typing import List
 from pydantic import BaseModel,EmailStr
@@ -5,6 +6,11 @@ from pydantic import BaseModel,EmailStr
 
 class Book(BaseModel):
     title: str
+    annotation: Optional[str]
+    isbn: Optional[str]
+    publish_at: Optional[date]
+    total_sells: Optional[int]
+    total_views: Optional[int]
     authors: Optional[List] = []
     publisher_id: Optional[int]
 
