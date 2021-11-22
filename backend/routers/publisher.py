@@ -32,13 +32,16 @@ def add_publisher(request: schemas.Publisher):
 @router.get('/api/post/publisher/{publisher_id}')
 def get_publisher(publisher_id: int):
     p = db.query(Publisher).get(publisher_id)
-    books = db.query(Book).filter(publisher_id==p.id).all()
+    books = db.query(Book).filter(publisher_id==p.id)
+    new_books = books.order_by('publish_at').all()[::-1][:5]
+    hot_books = books.order_by('total_sells').all()[::-1][:5]
     return {
         "id": p.id, # идентификатор издателя
         "name": p.name, # имя издателя
         "description": p.description, # описание издателя
-        "books_total": len(books), # кол-во напечатанных книг этим издателем
-        # "new_books": [ # список новых книг, не более 5 шт.
+        "books_total": len(books.all()), # кол-во напечатанных книг этим издателем
+        "new_books": new_books,
+        # [ # список новых книг, не более 5 шт.
         #     {
         #         "id": 1, # идентификатор книги
         #         "title": "Book title", # заголовок книги
@@ -48,7 +51,8 @@ def get_publisher(publisher_id: int):
         #         "total_views": 10000 # кол-во просмотров
         #     }
         # ],
-        # "hot_books": [ # список самых продаваемых книг, не более 5 шт.
+        "hot_books": hot_books
+        # [ # список самых продаваемых книг, не более 5 шт.
         #     {
         #         "id": 1, # идентификатор книги
         #         "title": "Book title", # заголовок книги

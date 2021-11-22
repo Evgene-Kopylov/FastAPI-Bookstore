@@ -21,4 +21,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_column('book', 'publisher')
+    # op.drop_column('book', 'publisher_id')
+    pass
