@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
 from sqlalchemy.sql.schema import Table
 from sqlalchemy.orm import backref, relationship
+from sqlalchemy.sql.sqltypes import DATE
 
 from db.base_class import Base
 
@@ -16,6 +17,11 @@ book_author = Table('book_author',
 class Book(Base):
     id = Column(Integer,primary_key = True, index=True)
     title = Column(String,nullable= False)
+    annotation = Column(String)
+    isbn = Column(String)
+    publish_at = Column(DATE)
+    total_sells = Column(Integer, default=0)
+    total_views = Column(Integer, default=0)
     authors = relationship(
         'Author',
         secondary=book_author,
