@@ -1,4 +1,3 @@
-from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from main import app
@@ -23,10 +22,12 @@ def test_get_book_book_id():
     assert "title" in response.json().keys()
 
 def test_post_book():
-    body = {
-        "title": "SSS"
-    }    
-    response = client.post('/api/get/book/', body)
+    data = {
+        "title": "SSD",
+        "authors": [1,2],
+        "publisher": 1
+    }
+    response = client.post('/api/get/book/', data)
     assert response.status_code == 200
 
 
