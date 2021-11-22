@@ -30,33 +30,16 @@ def add_author(request: schemas.Author):
 @router.get('/api/post/author/{author_id}')
 def get_author(author_id: int):
     a = db.query(Author).get(author_id)
-    books = Book.o.filter()
-
+    books = db.query(Book).with_parent(a)
+    new_books = books.order_by('publish_at').all()[::-1][:5]
+    hot_books = books.order_by('total_sells').all()[::-1][:5]
 
     return {
         "id": a.id, # идентификатор автора
         "first_name": a.first_name, # имя автора
         "last_name": a.last_name, # фамилия автора
-        "second_name": a.second_name, # отчество автора
+        "middle_name": a.middle_name, # отчество автора
         "books_total": 100, # кол-во опубликованных книг у автора
-        "new_books": [ # список новых книг, не более 5 шт.
-            {
-                "id": 1, # идентификатор книги
-                "title": "Book title", # заголовок книги
-                "annotation": "Book annotation...", # краткое изложение книги
-                "publish_at": "2021-02-28", # дата публикации
-                "total_sells": 100, # кол-во продаж
-                "total_views": 10000 # кол-во просмотров
-            }
-        ],
-        "hot_books": [ # список самых продаваемых книг, не более 5 шт.
-            {
-                "id": 1, # идентификатор книги
-                "title": "Book title", # заголовок книги
-                "annotation": "Book annotation...", # краткое изложение книги
-                "publish_at": "2021-02-28", # дата публикации
-                "total_sells": 100, # кол-во продаж
-                "total_views": 10000 # кол-во просмотров
-            }
-        ]
+        "new_books": new_books,
+        "hot_books": hot_books
     }
