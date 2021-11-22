@@ -1,7 +1,7 @@
 from fastapi import APIRouter
+from db.schemas.author import AuthorBase
 from db.models import Book
 
-from db import schemas
 from db.models import Author
 from db.session import SessionLocal
 
@@ -13,7 +13,7 @@ router = APIRouter()
 
 
 @router.post('/api/post/author/')
-def add_author(request: schemas.Author):
+def add_author(request: AuthorBase):
     obj = Author(**request.dict())
     db.add(obj)
     db.commit()

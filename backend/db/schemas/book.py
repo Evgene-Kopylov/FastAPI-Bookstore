@@ -1,10 +1,10 @@
 from datetime import date
 from typing import Optional
 from typing import List
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel
 
 
-class Book(BaseModel):
+class BookBase(BaseModel):
     title: str
     annotation: Optional[str]
     isbn: Optional[str]
@@ -13,16 +13,6 @@ class Book(BaseModel):
     total_views: Optional[int]
     authors: Optional[List] = []
     publisher_id: Optional[int]
-
-
-class Author(BaseModel):
-    first_name: str
-    last_name: Optional[str]
-    middle_name: Optional[str]
-
-class Publisher(BaseModel):
-    name: str
-    description: Optional[str]
 
 
 class LBs_BookSchema(BaseModel):

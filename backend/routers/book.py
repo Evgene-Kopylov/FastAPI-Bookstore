@@ -1,11 +1,10 @@
 from fastapi import APIRouter
-from db.schemas import ListBooks
+from db.schemas.book import BookBase
+from db.schemas.book import ListBooks
 from db.models import Publisher
 from db.models import Author
 from db.models import Book
 from db.session import SessionLocal
-
-from db import schemas
 
 
 db = SessionLocal()
@@ -14,7 +13,7 @@ router = APIRouter()
 
 
 @router.post('/api/post/book/')
-def add_book(request: schemas.Book):
+def add_book(request: BookBase):
     b = Book()
     b.title = request.title
     for author_id in request.authors:
@@ -62,5 +61,25 @@ def list_books(page:int, size:int):
 @router.get('/api/get/book/{book_id}')
 def get_book(book_id: int):
     book = db.query(Book).filter(Book.id == book_id).first()
-    return book
+    return {
+        "id": 1, # идентификатор книги
+        "title": "Book title", # заголовок книги
+        "annotation": "Book annotation...", # краткое изложение книги
+        "isbn": "9783161484100",
+        "publish_at": "2021-02-28", # дата публикации
+        "total_sells": 100, # кол-во продаж
+        "total_views": 10000, # кол-во просмотров
+        "authors": [ # полный список авторов книги
+            {
+                "id": 1, # идентификатор автора
+                "first_name": "Александр", # имя автора
+                "last_name": "Пушкин", # фамилия автора
+                "second_name": "Сергеевич", # отчество автора
+            }
+        ],
+        "publisher": {
+            "id": 1, # идентификатор издателя
+            "name": "Publisher", # имя издателя
+        }
+    }
 

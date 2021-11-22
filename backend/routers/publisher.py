@@ -1,10 +1,9 @@
 from fastapi import APIRouter
 from db.models import Book
 from db.session import SessionLocal
-from db.models import Author
 from db.models import Publisher
 
-from db import schemas
+from db.schemas.publisher import PublisherBase
 
 
 db = SessionLocal()
@@ -13,7 +12,7 @@ router = APIRouter()
 
 
 @router.post('/api/post/publisher/')
-def add_publisher(request: schemas.Publisher):
+def add_publisher(request: PublisherBase):
     p = Publisher()
     p.name = request.name
     db.add(p)
