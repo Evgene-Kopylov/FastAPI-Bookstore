@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from db.base_models import BookBase
+from db.models import Publisher
+from db.models import Author
 from db.models import Book
 from db.session import SessionLocal
 
-from db.base_models import AuthorBase
-from db.models import Author
+from db import schemas
 
 
 db = SessionLocal()
@@ -13,15 +13,19 @@ router = APIRouter()
 
 
 @router.post('/api/post/book/')
-def add_book(request: BookBase):
+def add_book(request: schemas.Book):
     b = Book()
     b.title = request.title
     for author_id in request.authors:
         author = db.query(Author).get(author_id)
         b.authors.append(author)
+    publisher = db.query(Publisher).get(request.publisher_id)
+    b.publisher = publisher
     db.add(b)
+
     db.commit()
     db.refresh(b)
+    db.refresh(publisher)
 
     books_list = db.query(Book).all()[::-1][:5]
 

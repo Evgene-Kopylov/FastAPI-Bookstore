@@ -20,6 +20,9 @@ class Book(Base):
         'Author',
         secondary=book_author,
         backref=backref('books', lazy='dynamic'))
+    publisher_id = Column(
+        Integer, 
+        ForeignKey('publisher.id'))
 
 class Author(Base):
     id = Column(Integer,primary_key = True, index=True)
@@ -27,3 +30,9 @@ class Author(Base):
     last_name = Column(String)
     middle_name = Column(String)
 
+class Publisher(Base):
+    id = Column(Integer,primary_key = True, index=True)
+    name = Column(String,nullable= False)
+    books = relationship(
+        'Book',
+        backref='publisher')
