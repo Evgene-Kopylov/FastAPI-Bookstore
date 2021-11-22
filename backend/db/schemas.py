@@ -23,3 +23,19 @@ class Author(BaseModel):
 class Publisher(BaseModel):
     name: str
     description: Optional[str]
+
+
+class LBs_BookSchema(BaseModel):
+    id: int
+    title: str
+    annotation: Optional[str]
+    publish_at: Optional[date]
+    total_sells: int = 0
+    total_views: int = 0
+
+
+class ListBooks(BaseModel):
+    items: List[LBs_BookSchema]
+    total: int
+    page: int
+    size: int

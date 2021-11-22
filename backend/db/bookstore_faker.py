@@ -54,7 +54,7 @@ class BookstoreFactory:
             datetime.date.today() - datetime.timedelta(days=5000),
             datetime.date.today())
         b.total_sells = self.fake.pyint(0,100,1)
-        b.total_views = self.fake.pyint(0,1000,1)
+        b.total_views = self.fake.pyint(0,10000,1)
         
         authors = self.db.query(Author).all()
         for _ in range(self.fake.pyint(1,3,1)):

@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from db.schemas import ListBooks
 from db.models import Publisher
 from db.models import Author
 from db.models import Book
@@ -36,10 +37,26 @@ def add_book(request: schemas.Book):
     }
 
 
-@router.get('/api/get/book/')
-def list_books():
-    books = db.query(Book).all()[::-1][:5]
-    return books
+@router.get('/api/get/book/', response_model=ListBooks)
+def list_books(page:int, size:int):
+    books = db.query(Book)
+    total = books.count()
+
+    i = total - (page * size)
+    if i < 0: i = 0
+    k = i + size
+
+    raw_items = books.order_by('total_views').all()[i:k][::-1]
+
+    items = [item.__dict__ for item in raw_items]
+
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "size": size
+    }
+
 
 
 @router.get('/api/get/book/{book_id}')
