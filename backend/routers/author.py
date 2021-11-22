@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from db.schemas.author import GetAuthor
 from db.schemas.author import AuthorBase
 from db.models import Book
 
@@ -27,12 +28,17 @@ def add_author(request: AuthorBase):
         'authors_list': authors_list
     }
 
-@router.get('/api/post/author/{author_id}')
+@router.get('/api/get/author/{author_id}', 
+    response_model=GetAuthor)
 def get_author(author_id: int):
     a = db.query(Author).get(author_id)
     books = db.query(Book).with_parent(a)
-    new_books = books.order_by('publish_at').all()[::-1][:5]
-    hot_books = books.order_by('total_sells').all()[::-1][:5]
+
+    items = books.order_by('publish_at').all()[::-1][:5]
+    new_books = [item.__dict__ for item in items]
+
+    items = books.order_by('total_sells').all()[::-1][:5]
+    hot_books = [item.__dict__ for item in items]
 
     return {
         "id": a.id, # идентификатор автора
