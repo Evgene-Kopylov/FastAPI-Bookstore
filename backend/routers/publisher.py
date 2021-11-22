@@ -32,7 +32,7 @@ def add_publisher(request: schemas.Publisher):
 @router.get('/api/post/publisher/{publisher_id}')
 def get_publisher(publisher_id: int):
     p = db.query(Publisher).get(publisher_id)
-    books = db.query(Book).filter(publisher_id==p.id)
+    books = db.query(Book).filter(Book.publisher_id==p.id)
     new_books = books.order_by('publish_at').all()[::-1][:5]
     hot_books = books.order_by('total_sells').all()[::-1][:5]
     return {
