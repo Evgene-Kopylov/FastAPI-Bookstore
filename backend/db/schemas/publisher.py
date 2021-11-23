@@ -40,3 +40,8 @@ class ListPublisher(BaseModel):
     page: int
     size: int
 
+
+class PATCH_Publisher(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+

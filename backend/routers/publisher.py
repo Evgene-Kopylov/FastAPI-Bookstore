@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from db.schemas import publisher
+from db.schemas.publisher import PATCH_Publisher
 from db.schemas.publisher import ListPublisher
 from db.schemas.publisher import GetPublisher
 from db.models import Book
@@ -80,3 +80,16 @@ def list_publishers(page:int, size:int):
     }
 
 
+@router.patch('/api/patch/publisher/{publisher_id}')
+def update_publisher(publisher_id:int, request: PATCH_Publisher):
+    publisher = db.query(Publisher).get(publisher_id)
+    if request.name:
+        publisher.name = request.name
+    if request.description:
+        publisher.description = request.description
+
+    db.commit()
+    db.refresh(publisher)
+    publisher = db.query(Publisher).get(publisher_id)
+
+    return publisher
