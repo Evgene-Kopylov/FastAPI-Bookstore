@@ -34,15 +34,15 @@ def test_get_author_author_id():
     assert "first_name" in response.json().keys()
 
 
-# def test_get_publisher_publisher_list():
-#     response = client.get('/api/get/publisher/')
-#     assert response.status_code == 200
+def test_get_publisher_publisher_list():
+    response = client.get('/api/get/publisher/?page=1&size=3')
+    assert response.status_code == 200
 
-# def test_get_publisher_publisher_id():
-#     response = client.get('/api/get/publisher/1')
-#     assert response.status_code == 200
-#     print(response.json())
-#     assert "title" in response.json().keys()
+def test_get_publisher_publisher_id():
+    response = client.get('/api/get/publisher/1')
+    assert response.status_code == 200
+    print(response.json())
+    assert "name" in response.json().keys()
 
 
 
