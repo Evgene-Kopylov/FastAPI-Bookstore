@@ -32,7 +32,6 @@ def add_book(request: BookBase):
     books_list = db.query(Book).all()[::-1][:5]
 
     return {
-        'msg': "msg",
         'data': request,
         'books_list': books_list
     }
@@ -109,3 +108,13 @@ def update_book(book_id:int, request: PATCH_Book):
     book = db.query(Book).get(book_id)
     authors = book.authors
     return book
+
+
+@router.delete('/api/delete/book/{book_id}')
+def delete_book(book_id:int):
+    book = db.query(Book).get(book_id)
+    if book is None:
+        return {'messege': 'Item not found'}
+    db.delete(book)
+    db.commit()
+    return {'messege': 'book deleted'}
