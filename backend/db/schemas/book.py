@@ -62,5 +62,5 @@ class GetBook(BaseModel):
     publish_at: Optional[date]
     total_sells: Optional[int]
     total_views: Optional[int]
-    # authors: Optional[List[GB_Authors]]
-    # publisher: Optional[GB_Publisher]
+    authors: Optional[List[GB_Authors]]
+    publisher: Optional[GB_Publisher]

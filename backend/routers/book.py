@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from fastapi.encoders import jsonable_encoder
-from sqlalchemy.sql.expression import update
 from db.schemas.book import GetBook
 from db.schemas.book import PATCH_Book
 from db.schemas.book import BookBase
@@ -10,7 +8,6 @@ from db.models import Author
 from db.models import Book
 from db.session import SessionLocal
 
-import ast
 
 db = SessionLocal()
 
@@ -63,19 +60,20 @@ def list_books(page:int, size:int):
 
 
 
-@router.get('/api/get/book/{book_id}')#, response_model=GetBook)
+@router.get('/api/get/book/{book_id}', response_model=GetBook)
 def get_book(book_id: int):
     book = db.query(Book).get(book_id)
     b = book
+    authors = [item.__dict__ for item in b.authors]
     return {
-        "id": b.id, # идентификатор книги
-        "title": b.title, # заголовок книги
-        "annotation": b.annotation, # краткое изложение книги
+        "id": b.id,
+        "title": b.title,
+        "annotation": b.annotation,
         "isbn": b.isbn,
-        "publish_at": b.publish_at, # дата публикации
-        "total_sells": b.total_sells, # кол-во продаж
-        "total_views": b.total_views, # кол-во просмотров
-        "authors": b.authors,
+        "publish_at": b.publish_at,
+        "total_sells": b.total_sells,
+        "total_views": b.total_views,
+        "authors": authors,
         "publisher": {
             "id": b.publisher.id,
             "name": b.publisher.name
