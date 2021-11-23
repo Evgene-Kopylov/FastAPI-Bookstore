@@ -1,6 +1,6 @@
-from db.bookstore_faker import BookstoreFactory
+from tests.bookstore_faker import BookstoreFactory
 
 factory = BookstoreFactory()
 
-factory.fake_all(5,5,5)
+factory.fake_all(10,50,100)
 
