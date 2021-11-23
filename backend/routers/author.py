@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from db.schemas.author import PATCH_author
 from db.schemas.author import ListAuthor
 from db.schemas.author import GetAuthor
 from db.schemas.author import AuthorBase
@@ -35,6 +36,8 @@ def get_author(author_id: int):
     a = db.query(Author).get(author_id)
     books = db.query(Book).with_parent(a)
 
+    books_total = books.count()
+
     items = books.order_by('publish_at').all()[::-1][:5]
     new_books = [item.__dict__ for item in items]
 
@@ -46,7 +49,7 @@ def get_author(author_id: int):
         "first_name": a.first_name,
         "last_name": a.last_name,
         "middle_name": a.middle_name,
-        "books_total": 100,
+        "books_total": books_total,
         "new_books": new_books,
         "hot_books": hot_books
     }
@@ -77,3 +80,16 @@ def list_authors(page:int, size:int):
         "page": page,
         "size": size
     }
+
+
+@router.patch('/api/patch/author/{author_id}')
+def update_author(author_id:int, request: PATCH_author):
+    author = db.query(Author).get(author_id)
+    if request.first_name:
+        author.first_name = request.first_name
+    if request.last_name:
+        author.last_name = request.last_name
+    if request.middle_name:
+        author.middle_name = request.middle_name
+
+    return author
