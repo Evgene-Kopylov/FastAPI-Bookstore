@@ -44,10 +44,10 @@ def get_publisher(publisher_id: int):
     hot_books = [item.__dict__ for item in items]
 
     return {
-        "id": p.id, # идентификатор издателя
-        "name": p.name, # имя издателя
-        "description": p.description, # описание издателя
-        "books_total": len(books.all()), # кол-во напечатанных книг этим издателем
+        "id": p.id,
+        "name": p.name,
+        "description": p.description,
+        "books_total": len(books.all()),
         "new_books": new_books,
         "hot_books": hot_books
     }
