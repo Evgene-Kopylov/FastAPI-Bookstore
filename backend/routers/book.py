@@ -65,30 +65,30 @@ def list_books(page:int, size:int):
 @router.get('/api/get/book/{book_id}')
 def get_book(book_id: int):
     book = db.query(Book).filter(Book.id == book_id).first()
-    return {
-        "id": 1, # идентификатор книги
-        "title": "Book title", # заголовок книги
-        "annotation": "Book annotation...", # краткое изложение книги
-        "isbn": "9783161484100",
-        "publish_at": "2021-02-28", # дата публикации
-        "total_sells": 100, # кол-во продаж
-        "total_views": 10000, # кол-во просмотров
-        "authors": [ # полный список авторов книги
-            {
-                "id": 1, # идентификатор автора
-                "first_name": "Александр", # имя автора
-                "last_name": "Пушкин", # фамилия автора
-                "second_name": "Сергеевич", # отчество автора
-            }
-        ],
-        "publisher": {
-            "id": 1, # идентификатор издателя
-            "name": "Publisher", # имя издателя
-        }
-    }
+    return book
+        # "id": 1, # идентификатор книги
+        # "title": "Book title", # заголовок книги
+        # "annotation": "Book annotation...", # краткое изложение книги
+        # "isbn": "9783161484100",
+        # "publish_at": "2021-02-28", # дата публикации
+        # "total_sells": 100, # кол-во продаж
+        # "total_views": 10000, # кол-во просмотров
+        # "authors": [ # полный список авторов книги
+        #     {
+        #         "id": 1, # идентификатор автора
+        #         "first_name": "Александр", # имя автора
+        #         "last_name": "Пушкин", # фамилия автора
+        #         "second_name": "Сергеевич", # отчество автора
+        #     }
+        # ],
+        # "publisher": {
+        #     "id": 1, # идентификатор издателя
+        #     "name": "Publisher", # имя издателя
+        # }
+    # }
 
 
-@router.patch('/api/patch/book/')
+@router.patch('/api/patch/book/{book_id}')
 def update_book(book_id:int, request: PATCH_Book):
     book = db.query(Book).get(book_id)
     if request.title:
@@ -114,5 +114,5 @@ def update_book(book_id:int, request: PATCH_Book):
     db.commit()
     db.refresh(book)
     book = db.query(Book).get(book_id)
-
-    return {"book": book, "authors": book.authors}
+    book.authors = book.authors
+    return book, book.authors

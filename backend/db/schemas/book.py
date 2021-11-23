@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional
+from typing import Any, Optional
 from typing import List
 from pydantic import BaseModel
 
@@ -32,7 +32,6 @@ class ListBooks(BaseModel):
 
 
 class PATCH_Book(BaseModel):
-    id: int
     title: Optional[str]
     annotation: Optional[str]
     isbn: Optional[str]
@@ -41,3 +40,4 @@ class PATCH_Book(BaseModel):
     total_views: Optional[int]
     authors: Optional[List[int]]
     publisher_id: Optional[int]
+
