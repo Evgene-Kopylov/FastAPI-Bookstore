@@ -92,4 +92,6 @@ def update_author(author_id:int, request: PATCH_author):
     if request.middle_name:
         author.middle_name = request.middle_name
 
+    db.commit()
+    db.refresh(author)
     return author
