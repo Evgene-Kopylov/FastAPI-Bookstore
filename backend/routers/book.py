@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.sql.expression import update
+from db.schemas.book import GetBook
 from db.schemas.book import PATCH_Book
 from db.schemas.book import BookBase
 from db.schemas.book import ListBooks
@@ -62,30 +63,24 @@ def list_books(page:int, size:int):
 
 
 
-@router.get('/api/get/book/{book_id}')
+@router.get('/api/get/book/{book_id}')#, response_model=GetBook)
 def get_book(book_id: int):
-    book = db.query(Book).filter(Book.id == book_id).first()
-    return book
-        # "id": 1, # идентификатор книги
-        # "title": "Book title", # заголовок книги
-        # "annotation": "Book annotation...", # краткое изложение книги
-        # "isbn": "9783161484100",
-        # "publish_at": "2021-02-28", # дата публикации
-        # "total_sells": 100, # кол-во продаж
-        # "total_views": 10000, # кол-во просмотров
-        # "authors": [ # полный список авторов книги
-        #     {
-        #         "id": 1, # идентификатор автора
-        #         "first_name": "Александр", # имя автора
-        #         "last_name": "Пушкин", # фамилия автора
-        #         "second_name": "Сергеевич", # отчество автора
-        #     }
-        # ],
-        # "publisher": {
-        #     "id": 1, # идентификатор издателя
-        #     "name": "Publisher", # имя издателя
-        # }
-    # }
+    book = db.query(Book).get(book_id)
+    b = book
+    return {
+        "id": b.id, # идентификатор книги
+        "title": b.title, # заголовок книги
+        "annotation": b.annotation, # краткое изложение книги
+        "isbn": b.isbn,
+        "publish_at": b.publish_at, # дата публикации
+        "total_sells": b.total_sells, # кол-во продаж
+        "total_views": b.total_views, # кол-во просмотров
+        "authors": b.authors,
+        "publisher": {
+            "id": b.publisher.id,
+            "name": b.publisher.name
+        }
+    }
 
 
 @router.patch('/api/patch/book/{book_id}')
@@ -114,5 +109,5 @@ def update_book(book_id:int, request: PATCH_Book):
     db.commit()
     db.refresh(book)
     book = db.query(Book).get(book_id)
-    book.authors = book.authors
-    return book, book.authors
+    authors = book.authors
+    return book
