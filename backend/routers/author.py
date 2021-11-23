@@ -1,4 +1,8 @@
 from fastapi import APIRouter
+
+from fastapi import status
+from fastapi import Response
+
 from db.schemas.author import PATCH_author
 from db.schemas.author import ListAuthor
 from db.schemas.author import GetAuthor
@@ -95,3 +99,15 @@ def update_author(author_id:int, request: PATCH_author):
     db.commit()
     db.refresh(author)
     return author
+
+
+@router.delete('/api/delete/author/{author_id}')
+def delete_author(author_id:int, response: Response):
+    author = db.query(Author).get(author_id)
+    if author is None:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'messege': 'author not found'}
+    db.delete(author)
+    db.commit()
+    return {'messege': 'author deleted'}
+

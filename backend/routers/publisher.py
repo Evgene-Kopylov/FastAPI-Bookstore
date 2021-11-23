@@ -1,4 +1,8 @@
 from fastapi import APIRouter
+
+from fastapi import status
+from fastapi import Response
+
 from db.schemas.publisher import PATCH_Publisher
 from db.schemas.publisher import ListPublisher
 from db.schemas.publisher import GetPublisher
@@ -93,3 +97,15 @@ def update_publisher(publisher_id:int, request: PATCH_Publisher):
     publisher = db.query(Publisher).get(publisher_id)
 
     return publisher
+
+
+@router.delete('/api/delete/publisher/{publisher_id}')
+def delete_publisher(publisher_id:int, response: Response):
+    publisher = db.query(Publisher).get(publisher_id)
+    if publisher is None:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'messege': 'publisher not found'}
+    db.delete(publisher)
+    db.commit()
+    return {'messege': 'publisher deleted'}
+
