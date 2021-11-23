@@ -1,4 +1,7 @@
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy.sql.expression import update
+from db.schemas.book import PATCH_Book
 from db.schemas.book import BookBase
 from db.schemas.book import ListBooks
 from db.models import Publisher
@@ -6,6 +9,7 @@ from db.models import Author
 from db.models import Book
 from db.session import SessionLocal
 
+import ast
 
 db = SessionLocal()
 
@@ -83,3 +87,32 @@ def get_book(book_id: int):
         }
     }
 
+
+@router.patch('/api/patch/book/')
+def update_book(book_id:int, request: PATCH_Book):
+    book = db.query(Book).get(book_id)
+    if request.title:
+        book.title = request.title
+    if request.annotation:
+        book.annotation = request.annotation
+    if request.isbn:
+        book.isbn = request.isbn
+    if request.publish_at:
+        book.publish_at = request.publish_at
+    if request.total_sells:
+        book.total_sells = request.total_sells
+    if request.total_views:
+        book.total_views = request.total_views
+    if request.authors:
+        book.authors[:] = []
+        for author_id in request.authors:
+            author = db.query(Author).get(author_id)
+            book.authors.append(author)
+    if request.publisher_id:
+        book.publisher_id = request.publisher_id
+
+    db.commit()
+    db.refresh(book)
+    book = db.query(Book).get(book_id)
+
+    return {"book": book, "authors": book.authors}

@@ -29,3 +29,15 @@ class ListBooks(BaseModel):
     total: int
     page: int
     size: int
+
+
+class PATCH_Book(BaseModel):
+    id: int
+    title: Optional[str]
+    annotation: Optional[str]
+    isbn: Optional[str]
+    publish_at: Optional[date]
+    total_sells: Optional[int]
+    total_views: Optional[int]
+    authors: Optional[List[int]]
+    publisher_id: Optional[int]
