@@ -1,4 +1,7 @@
 from fastapi import APIRouter
+from fastapi import status
+from fastapi import Response
+
 from db.schemas.book import GetBook
 from db.schemas.book import PATCH_Book
 from db.schemas.book import BookBase
@@ -110,11 +113,13 @@ def update_book(book_id:int, request: PATCH_Book):
     return book
 
 
+
 @router.delete('/api/delete/book/{book_id}')
-def delete_book(book_id:int):
+def delete_book(book_id:int, response: Response):
     book = db.query(Book).get(book_id)
     if book is None:
-        return {'messege': 'Item not found'}
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {'messege': 'book not found'}
     db.delete(book)
     db.commit()
     return {'messege': 'book deleted'}
