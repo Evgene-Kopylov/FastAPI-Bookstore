@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Any, Optional
+from typing import Optional
 from typing import List
 from pydantic import BaseModel
 
@@ -11,7 +11,7 @@ class BookBase(BaseModel):
     publish_at: Optional[date]
     total_sells: Optional[int]
     total_views: Optional[int]
-    authors: Optional[List]
+    authors: Optional[List[int]]
     publisher_id: Optional[int]
 
 

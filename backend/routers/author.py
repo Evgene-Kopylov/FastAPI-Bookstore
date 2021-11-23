@@ -29,7 +29,7 @@ def add_author(request: AuthorBase):
     authors_list = db.query(Author).all()[::-1][:5]
 
     return {
-        'msg': 'msg',
+        'msg': 'OK',
         'data': request,
         'authors_list': authors_list
     }
