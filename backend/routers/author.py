@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from db.schemas.author import ListAuthor
 from db.schemas.author import GetAuthor
 from db.schemas.author import AuthorBase
 from db.models import Book
@@ -41,11 +42,38 @@ def get_author(author_id: int):
     hot_books = [item.__dict__ for item in items]
 
     return {
-        "id": a.id, # идентификатор автора
-        "first_name": a.first_name, # имя автора
-        "last_name": a.last_name, # фамилия автора
-        "middle_name": a.middle_name, # отчество автора
-        "books_total": 100, # кол-во опубликованных книг у автора
+        "id": a.id,
+        "first_name": a.first_name,
+        "last_name": a.last_name,
+        "middle_name": a.middle_name,
+        "books_total": 100,
         "new_books": new_books,
         "hot_books": hot_books
+    }
+
+
+@router.get('/api/get/author/', response_model=ListAuthor)
+def list_authors(page:int, size:int):
+    authors = db.query(Author)
+    total = authors.count()
+
+    i = total - (page * size)
+    if i < 0: i = 0
+    k = i + size
+
+    authors = authors.all()
+    items = []    
+    for author in authors:
+        item = author.__dict__
+        item.update({'books_total':author.books.count()})
+        items.append(item)
+
+    items = sorted(items, key=lambda d: d['books_total'])[i:k][::-1]
+
+
+    return {
+        "items": items,
+        "total": total,
+        "page": page,
+        "size": size
     }

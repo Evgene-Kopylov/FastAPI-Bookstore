@@ -23,9 +23,9 @@ def test_get_book_book_id():
     assert "title" in response.json().keys()
 
 
-# def test_get_author_author_list():
-#     response = client.get('/api/get/author/')
-#     assert response.status_code == 200
+def test_get_author_author_list():
+    response = client.get('/api/get/author/?page=1&size=5')
+    assert response.status_code == 200
 
 
 def test_get_author_author_id():
