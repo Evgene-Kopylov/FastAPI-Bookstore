@@ -1,7 +1,18 @@
 FROM python:3.10
 
-WORKDIR /code/backend
+WORKDIR /backend
 
-COPY ./backend/requirements.txt /code/backend/requirements.txt
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONBUFFERED 1
 
-RUN pip install --no-cache-dir --upgrade -r /code/backend/requirements.txt
+# install system dependencies
+RUN apt-get update \
+  && apt-get -y install netcat gcc postgresql \
+  && apt-get clean
+
+# install python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . /backend
