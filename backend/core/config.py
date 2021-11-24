@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     postgres_user: Optional[str] = os.getenv("POSTGRES_USER")
     postgres_password: Optional[str] = os.getenv("POSTGRES_PASSWORD")
     postgres_server: Optional[str] = os.getenv("POSTGRES_SERVER","localhost")
-    postgres_port: Optional[str] = os.getenv("POSTGRES_PORT","5432") # default postgres port is 5432
+    postgres_port: Optional[str] = os.getenv("POSTGRES_PORT", 5432) # default postgres port is 5432
     postgres_db: Optional[str] = os.getenv("POSTGRES_DB","test_db")
     database_url: Optional[str] = f"postgresql://{postgres_user}:{postgres_password}@{postgres_server}:{postgres_port}/{postgres_db}"
 
