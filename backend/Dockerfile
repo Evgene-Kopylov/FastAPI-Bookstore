@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /code/backend
+WORKDIR /code
 
 COPY ./backend/requirements.txt /code/backend/requirements.txt
 
